@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Component
@@ -46,7 +47,7 @@ public class DataInitializer implements CommandLineRunner {
                     user.setUsername("admin");
                     user.setAge(39);
                     user.setPassword(passwordEncoder.encode("admin"));
-                    user.setRoles(Set.of(adminRole));
+                    user.setRoles(new HashSet<>(Set.of(adminRole, userRole)));
                     return userRepository.save(user);
                 });
 
@@ -56,7 +57,7 @@ public class DataInitializer implements CommandLineRunner {
                     user.setUsername("user");
                     user.setAge(25);
                     user.setPassword(passwordEncoder.encode("user"));
-                    user.getRoles().add(userRole);
+                    user.setRoles(Set.of(userRole));
                     return userRepository.save(user);
                 });
     }

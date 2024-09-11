@@ -18,6 +18,11 @@
         <td th:text="${user.getAge()}"></td>
     </tbody>
 </table>
-<a href="/new">Добавить нового пользователя</a>
+<br>
+<br>
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    <button type="submit">Выйти</button>
+</form>
 </body>
 </html>

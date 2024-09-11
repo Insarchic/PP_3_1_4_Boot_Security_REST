@@ -1,7 +1,8 @@
 package ru.kata.spring.boot_security.demo.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,18 +15,18 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserRepository userRepository;
+   private final UserRepository userRepository;
 
-    @Autowired
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @GetMapping()
-    public String tableUser(Model model, @AuthenticationPrincipal UserDetails currentUserDetails) {
-        User user = userRepository.findByUsername(currentUserDetails.getUsername()).orElseThrow();
+    public String tableUser(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userRepository.findByUsername(username).orElseThrow();
         model.addAttribute("user", user);
         return "user";
     }
-
 }

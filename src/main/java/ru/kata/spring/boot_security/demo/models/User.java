@@ -129,4 +129,5 @@ public class User implements UserDetails {
     public int hashCode() {
         return Objects.hash(id, username, age, password, roles);
     }
+    
 }
