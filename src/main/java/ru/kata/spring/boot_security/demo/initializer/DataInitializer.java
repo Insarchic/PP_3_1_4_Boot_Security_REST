@@ -29,15 +29,15 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        Role adminRole = roleRepository.findByName("ROLE_ADMIN")
+        Role adminRole = roleRepository.findByName("ADMIN")
                 .orElseGet(() -> {
-                    Role role = new Role("ROLE_ADMIN");
+                    Role role = new Role("ADMIN");
                     return roleRepository.save(role);
                 });
 
-        Role userRole = roleRepository.findByName("ROLE_USER")
+        Role userRole = roleRepository.findByName("USER")
                 .orElseGet(() -> {
-                    Role role = new Role("ROLE_USER");
+                    Role role = new Role("USER");
                     return roleRepository.save(role);
                 });
 
