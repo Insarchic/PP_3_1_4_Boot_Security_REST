@@ -20,9 +20,9 @@
         <td th:text="${user.username}"></td>
         <td th:text="${user.age}"></td>
         <td>
-            <div class="roles">
-                <span th:each="role : ${user.roles}" class="role" th:text="${role.name}"></span>
-            </div>
+            <ul>
+                <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
+            </ul>
         </td>
 
         <td>
