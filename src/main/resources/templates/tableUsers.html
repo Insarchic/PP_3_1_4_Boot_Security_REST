@@ -3,23 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Title</title>
+    <title>Admin panel</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+<header class="mb-3">
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="nav-item text-left text-white px-3">
+            <span class="font-weight-bold" th:text="${usingUserEmail}"></span>
+            <span> with roles: </span>
+            <span th:each="role : ${allRoles}" th:text="${role.getAuthority()}"></span>
+        </div>
+        <div class="text-muted">
+            <form th:action="@{/logout}" method="post" class="form-inline">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+                <button type="submit" class="btn btn-link text-grey">Logout</button>
+            </form>
+        </div>
+    </nav>
+</header>
 <h1>Список пользователей</h1>
 <table>
     <thead>
     <tr>
-        <th>Имя</th>
-        <th>Возраст</th>
-        <th>Роль</th>
-        <th>Действия</th>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Role</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="user : ${users}">
-        <td th:text="${user.username}"></td>
-        <td th:text="${user.age}"></td>
+        <td><p th:text="${user.id}"></p></td>
+        <td><p th:text="${user.username}"></p></td>
+        <td><p th:text="${user.surname}"></p></td>
+        <td><p th:text="${user.age}"></p></td>
+        <td><p th:text="${user.email}"></p></td>
         <td>
             <ul>
                 <li th:each="role : ${user.roles}" th:text="${role.name}"></li>
@@ -40,18 +61,14 @@
     </tbody>
 </table>
 
-<br><br>
+
 
 <form th:action="@{/admin/users/new}" method="get">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
     <button type="submit">Добавить нового пользователя</button>
 </form>
 
-<br><br>
 
-<form th:action="@{/logout}" method="post">
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    <button type="submit">Выйти</button>
-</form>
+
 </body>
 </html>

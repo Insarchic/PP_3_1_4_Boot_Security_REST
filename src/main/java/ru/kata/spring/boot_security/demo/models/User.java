@@ -20,6 +20,10 @@ public class User implements UserDetails {
 
     private String username;
 
+    private String surname;
+
+    private String email;
+
     private int age;
 
     private String password;
@@ -34,17 +38,37 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, int age, String password, Set<Role> roles) {
+    public User(String username, String surname, String email, int age, String password, Set<Role> roles) {
         this.username = username;
+        this.surname = surname;
+        this.email = email;
         this.age = age;
         this.password = password;
         this.roles = roles;
     }
 
-    public User(String username, int age, String password) {
+    public User(String username, String email, String surname, int age, String password) {
         this.username = username;
+        this.email = email;
+        this.surname = surname;
         this.age = age;
         this.password = password;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setId(Long id) {

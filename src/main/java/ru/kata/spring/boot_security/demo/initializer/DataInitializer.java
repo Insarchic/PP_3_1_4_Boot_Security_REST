@@ -41,20 +41,24 @@ public class DataInitializer implements CommandLineRunner {
                     return roleRepository.save(role);
                 });
 
-        User adminUser = userRepository.findByUsername("admin")
+        User adminUser = userRepository.findByUsername("admin@mail.ru")
                 .orElseGet(() -> {
                     User user = new User();
-                    user.setUsername("admin");
+                    user.setUsername("admin@mail.ru");
+                    user.setSurname("surname");
+                    user.setEmail("admin@mail.ru");
                     user.setAge(39);
                     user.setPassword(passwordEncoder.encode("admin"));
-                    user.setRoles(new HashSet<>(Set.of(adminRole, userRole)));
+                    user.setRoles(Set.of(adminRole));
                     return userRepository.save(user);
                 });
 
-        User regularUser = userRepository.findByUsername("user")
+        User regularUser = userRepository.findByUsername("user@mail.ru")
                 .orElseGet(() -> {
                     User user = new User();
-                    user.setUsername("user");
+                    user.setUsername("user@mail.ru");
+                    user.setSurname("surname");
+                    user.setEmail("user@mail.ru");
                     user.setAge(25);
                     user.setPassword(passwordEncoder.encode("user"));
                     user.setRoles(Set.of(userRole));
