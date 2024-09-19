@@ -49,7 +49,7 @@ public class DataInitializer implements CommandLineRunner {
                     user.setEmail("admin@mail.ru");
                     user.setAge(39);
                     user.setPassword(passwordEncoder.encode("admin"));
-                    user.setRoles(Set.of(adminRole));
+                    user.setRoles(Set.of(adminRole, userRole));
                     return userRepository.save(user);
                 });
 

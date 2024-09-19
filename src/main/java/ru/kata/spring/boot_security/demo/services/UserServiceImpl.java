@@ -8,7 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.models.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
+
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
 import java.util.List;
@@ -53,7 +53,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 new RuntimeException("Пользователь на найден с номеро ID: " + user.getId()));
 
         savedUser.setUsername(user.getUsername());
+        savedUser.setSurname(user.getSurname());
         savedUser.setAge(user.getAge());
+        savedUser.setEmail(user.getEmail());
 
         if (user.getPassword() != null && !user.getPassword().isEmpty()) {
             savedUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
