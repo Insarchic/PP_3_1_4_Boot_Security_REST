@@ -48,7 +48,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     @Transactional
     public void save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        } else {
+            // Если пароль не передан, оставляем старый пароль
+            User existingUser = userRepository.findById(user.getId())
+                    .orElseThrow(() -> new RuntimeException("User not found with id: " + user.getId()));
+            user.setPassword(existingUser.getPassword());
+        }
 
         Set<Role> roles = new HashSet<>();
         for (Role role : user.getRoles()) {

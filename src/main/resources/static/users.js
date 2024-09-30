@@ -22,9 +22,7 @@ function fetchCurrentUser() {
             usernameSpan.textContent = user.email;
             roleSpan.textContent = user.roles.map(role => role.name).join(', ');
         })
-        .catch(error => {
-            console.error('Error fetching current user info:', error);
-        });
+
 }
 
 // Функция для получения и отображения всех пользователей
@@ -56,10 +54,7 @@ function fetchUsers() {
                 tableBody.appendChild(row);
             });
         })
-        .catch(error => {
-            console.error('Error fetching users:', error);
-            alert('Ошибка при загрузке пользователей');
-        });
+
 }
 
 // Функция для загрузки всех ролей и отображения их в селектах
@@ -120,10 +115,9 @@ document.getElementById('new-user-form').addEventListener('submit', function (ev
     })
         .then(response => {
             if (response.ok) {
-                fetchUsers();
-                alert('Пользователь успешно создан!');
                 this.reset();
-                closeModal('newUserPopup');
+                fetchUsers();
+                window.location.href = '/admin';// Обновляем таблицу пользователей
             } else {
                 return response.json().then(data => {
                     throw new Error(data.message || 'Не удалось создать пользователя');
@@ -135,7 +129,6 @@ document.getElementById('new-user-form').addEventListener('submit', function (ev
             alert('Ошибка при создании пользователя: ' + error.message);
         });
 });
-
 // Функция для открытия модального окна редактирования пользователя и заполнения формы
 function openEditUserPopup(userId) {
     console.log('Opening edit modal for user ID:', userId);
@@ -153,7 +146,7 @@ function openEditUserPopup(userId) {
             document.getElementById('editSurname').value = user.surname;
             document.getElementById('editAge').value = user.age;
             document.getElementById('editEmail').value = user.email;
-            document.getElementById('password').value = user.password;
+            document.getElementById('editPassword').value = user.password;
             const editRolesSelect = document.getElementById('editRoles');
             Array.from(editRolesSelect.options).forEach(option => {
                 option.selected = user.roles.some(role => role.id === parseInt(option.value, 10));
@@ -162,7 +155,6 @@ function openEditUserPopup(userId) {
         })
         .catch(error => {
             console.error('Error fetching user:', error);
-            alert('Ошибка при загрузке данных пользователя');
         });
 }
 
@@ -176,15 +168,15 @@ document.getElementById('editUserForm').addEventListener('submit', function (eve
     }));
     const user = {
         id: userId, // ID пользователя обязательно
-        username: formData.get('editFirstName'),
-        surname: formData.get('editLastName'),
+        username: formData.get('editUsername'),
+        surname: formData.get('editSurname'),
         age: parseInt(formData.get('editAge'), 10),
         email: formData.get('editEmail'),
-        password: formData.get('password'),
+        password: formData.get('editPassword'),
         roles: rolesSelected
     };
     console.log('Updating user:', user);
-    fetch(`/admin/users/${userId}`, { // Исправлен путь
+    fetch(`/admin/users`, { // Исправлен путь
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -194,8 +186,10 @@ document.getElementById('editUserForm').addEventListener('submit', function (eve
         .then(response => {
             if (response.ok) {
                 fetchUsers(); // Перезагрузка таблицы
-                alert('Пользователь успешно обновлен!');
+
                 closeModal('editUserModal');
+
+                window.location.href = '/admin';
             } else {
                 return response.json().then(data => {
                     console.error('Ошибка обновления:', data);

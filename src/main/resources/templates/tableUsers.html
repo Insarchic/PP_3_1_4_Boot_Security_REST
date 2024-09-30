@@ -7,6 +7,7 @@
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     >
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Admin Panel</title>
     <style>
 
@@ -65,6 +66,14 @@
         .close-popup:hover {
             color: #000;
         }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
     </style>
 </head>
@@ -82,7 +91,6 @@
         </ul>
     </div>
 </nav>
-
 
 <div class="row">
     <div class="col-md-2 px-0">
@@ -111,9 +119,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" id="show-new-user-form" class="nav-link no-refresh" onclick="openModal('newUserPopup')">
-                                New User
-                            </a>
+                            <a href="#newUserForm" class="nav-link" data-toggle="tab" role="tab">New User</a>
                         </li>
                     </ul>
 
@@ -123,7 +129,6 @@
                                 <div class="container-fluid px-0 bg-light border">
                                     <h5 class="card-header">All users</h5>
                                 </div>
-
                                 <div class="container-fluid mt-4">
                                     <div class="table-responsive">
                                         <table class="table table-striped bg-white">
@@ -147,48 +152,44 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
                 <!-- Оверлей для модальных окон -->
                 <div id="overlay" class="overlay"></div>
 
-                <!-- Модальное окно для создания нового пользователя -->
-                <div id="newUserPopup" class="popup">
-                    <div class="popup-header">
-                        <h3>Add New User</h3>
-                        <a href="#" class="close-popup" data-modal="newUserPopup">&times;</a>
+                <!-- Вкладка с формой для создания нового пользователя -->
+                <div id="newUserForm" class="tab-pane fade">
+                    <div class="form-container">
+                        <h3 class="text-center">Add New User</h3>
+                        <form id="new-user-form">
+                            <div class="form-group">
+                                <label for="username">First name</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="surname">Last name</label>
+                                <input type="text" class="form-control" id="surname" name="surname" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="age">Age</label>
+                                <input type="number" class="form-control" id="age" name="age" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="roles">Roles</label>
+                                <select multiple class="form-control" id="roles" name="roles">
+                                    <!-- Роли загружаются через JavaScript -->
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </form>
                     </div>
-
-                    <form id="new-user-form">
-                        <div class="form-group">
-                            <label for="username">First Name</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="surname">Last Name</label>
-                            <input type="text" class="form-control" id="surname" name="surname" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="age">Age</label>
-                            <input type="number" class="form-control" id="age" name="age" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="roles">Roles</label>
-                            <select class="form-control" multiple id="roles" name="roles">
-                                <!-- Роли будут загружаться через JS -->
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </form>
                 </div>
 
                 <!-- Модальное окно для редактирования пользователя -->
@@ -217,8 +218,8 @@
                             <input type="email" class="form-control" id="editEmail" name="editEmail" required>
                         </div>
                         <div class="form-group">
-                            <label for="EditPassword">Password</label>
-                            <input type="password" class="form-control" id="EditPassword" name="editPassword" required>
+                            <label for="editPassword">Password</label>
+                            <input type="password" class="form-control" id="editPassword" name="editPassword" required>
                         </div>
                         <div class="form-group">
                             <label for="editRoles">Role</label>
@@ -271,5 +272,9 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

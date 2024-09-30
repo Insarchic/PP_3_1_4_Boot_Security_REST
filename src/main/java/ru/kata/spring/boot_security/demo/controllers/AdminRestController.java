@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -51,12 +52,9 @@ public class AdminRestController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        if(user.getId() == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user) { // Добавлено @Valid
         userService.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/users/{id}")
