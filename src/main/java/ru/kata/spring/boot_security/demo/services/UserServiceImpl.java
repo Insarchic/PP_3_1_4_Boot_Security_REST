@@ -7,23 +7,29 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 
+import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
 import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -43,26 +49,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-    }
 
-    @Override
-    @Transactional
-    public void update(User user) {
-        User savedUser = userRepository.findById(user.getId()).orElseThrow(() ->
-                new RuntimeException("Пользователь на найден с номеро ID: " + user.getId()));
-
-        savedUser.setUsername(user.getUsername());
-        savedUser.setSurname(user.getSurname());
-        savedUser.setAge(user.getAge());
-        savedUser.setEmail(user.getEmail());
-
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            savedUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        Set<Role> roles = new HashSet<>();
+        for (Role role : user.getRoles()) {
+            Role existingRole = roleRepository.findById(role.getId())
+                    .orElseThrow(() -> new RuntimeException("Role not found with id: " + role.getId()));
+            roles.add(existingRole);
         }
+        user.setRoles(roles);
 
-        savedUser.getRoles().addAll(user.getRoles());
-        userRepository.save(savedUser);
+        userRepository.save(user);
     }
 
     @Override
