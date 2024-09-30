@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
@@ -9,7 +10,6 @@ import ru.kata.spring.boot_security.demo.repositories.UserRepository;
 import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
-import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -40,8 +40,9 @@ public class AdminRestController {
     }
 
     @GetMapping("/currentUser")
-    public ResponseEntity<Optional<User>> getCurrentUser(Principal principal) {
-        Optional<User> currentUser = userRepository.findByUsername(principal.getName());
+    public ResponseEntity<User> getCurrentUser(Principal principal) {
+        User currentUser = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
 

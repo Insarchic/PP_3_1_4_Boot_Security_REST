@@ -118,6 +118,7 @@ document.getElementById('new-user-form').addEventListener('submit', function (ev
                 this.reset();
                 fetchUsers();
                 window.location.href = '/admin';// Обновляем таблицу пользователей
+
             } else {
                 return response.json().then(data => {
                     throw new Error(data.message || 'Не удалось создать пользователя');
