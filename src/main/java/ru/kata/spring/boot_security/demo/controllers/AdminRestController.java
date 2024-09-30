@@ -52,7 +52,7 @@ public class AdminRestController {
     }
 
     @PutMapping("/users")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User user) { // Добавлено @Valid
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.save(user);
         return ResponseEntity.ok(user);
     }
